@@ -1,0 +1,19 @@
+/*!
+ * Zoearth
+ */
+
+.error-message
+{
+    width: 100%;
+}
+.fileDiv {height:60px;}
+
+.alert-info
+{
+    display:none;
+}
+
+#s_active
+{
+    width:100px;
+}

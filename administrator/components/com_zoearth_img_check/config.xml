@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<config>
+    <fields>
+        <fieldset name="component" addfieldpath="/administrator/components/com_z2/elements" >
+            <field name="limit" type="list" default="10" label="COM_LOAN_LIST_LIMIT" >
+                <option value="10">10</option>
+                <option value="20">20</option>
+                <option value="30">30</option>
+            </field>
+            <field name="serviceCategory" type="z2category" default="" label="COM_LOAN_SERVICE_ITEM_CATEGORY" />
+            
+            <field name="topUsers" type="user" default="此會員可以修改已鎖定的申請記錄狀態" label="特殊管理會員" />
+            
+        </fieldset>
+        <fieldset name="permissions" label="JCONFIG_PERMISSIONS_LABEL" description="JCONFIG_PERMISSIONS_DESC">
+            <field type="krdonationcodecheck"/>
+            <field name="rules" type="rules" label="JCONFIG_PERMISSIONS_LABEL" filter="rules" section="component" component="com_loan_customer" validate="rules"/>
+        </fieldset>
+    </fields>
+</config>

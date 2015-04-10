@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<extension type="component" version="2.5" method="upgrade">
+    <name>com_zoearth_twcn_change</name>
+    <version>1.0</version>
+    <author>plusdi.com</author>
+    <authorEmail>zoearthmoon@gmail.com</authorEmail>
+    <authorUrl>http://www.plusdi.com/</authorUrl>
+    <copyright>Copyright 2014 @plusdi.com</copyright>
+    <creationDate>2014-04-24</creationDate>
+    <description>
+    <![CDATA[
+    <div style="text-align:left">
+        <blockquote>
+        <p>您好!這是[普拉斯數位整合]所開發的<h1>文字工具元件</h1></p>
+        <small>主要功能項目有
+            <ul>
+            <li>1.繁簡互轉</li>
+            <li>2.Google翻譯HTML整理</li>
+            <li>3.顏色選取器</li>
+        </small>
+        </blockquote>
+        <dl class="dl-horizontal">
+        <dt>1.0版本</dt><dd>基本功能</dd>
+        </dl>
+    </div>
+    ]]></description>
+    <scriptfile>script.zoearth_twcn_change.php</scriptfile>
+    <install>
+        <sql>
+            <file driver="mysql" charset="utf8">sql/install.utf8.sql</file>
+        </sql>
+    </install>
+    <files folder="components/com_zoearth_twcn_change">
+        <folder>controllers</folder>
+        <folder>css</folder>
+        <folder>images</folder>
+        <folder>models</folder>
+        <folder>views</folder>
+        <filename>zoearth_twcn_change.php</filename>
+    </files>
+    <administration>
+        <menu>COM_ZOEARTH_TWCN_CHANGE</menu>
+        <submenu>
+            <menu link="option=com_loan_customer" >COM_ZOEARTH_ADD_WORD</menu>
+        </submenu>
+        <files folder="administrator/components/com_zoearth_twcn_change">
+            <filename>index.html</filename>
+            <filename>config.xml</filename>
+            <filename>access.xml</filename>
+            <filename>zoearth_twcn_change.php</filename>
+            <folder>models</folder>
+            <folder>helpers</folder>
+            <folder>libraries</folder>
+            <folder>media</folder>
+            <folder>views</folder>
+            <folder>controllers</folder>
+            <folder>sql</folder>
+        </files>
+        <languages folder="administrator/language">
+            <language tag="zh-TW">zh-TW/zh-TW.com_zoearth_twcn_change.ini</language>
+            <language tag="zh-TW">zh-TW/zh-TW.com_zoearth_twcn_change.sys.ini</language>
+        </languages>
+    </administration>
+    <config>
+    </config>
+</extension>
