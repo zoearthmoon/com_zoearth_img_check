@@ -31,6 +31,27 @@ class ZoearthImgCheckControllerCheck extends ZoeController
         $view->display();
     }
     
+    //20150413 zoearth 搜尋檔案
+    function searchFiles()
+    {
+        $res = array();
+        
+        $res['data'] = array();
+        for($i=0;$i<=50;$i++)
+        {
+            $res['data'][] = array(
+                    '<input type="checkbox" value="1" class="itemCheckBox" >',
+                    'src'.rand(1,5000).'.jpg',
+                    'img'.rand(1,5000).'.jpg',
+                    rand(1,5000).'KB',
+                    '2015-04-'.rand(1,30),
+                    '--',
+            );
+        }
+        echo json_encode($res);
+        exit();
+    }
+    
     //20140424 zoearth 取得編輯介面會需要用到的選單
     function getOptions()
     {
