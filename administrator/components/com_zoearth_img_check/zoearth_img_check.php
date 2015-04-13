@@ -11,8 +11,8 @@ JHTML::_('behavior.tooltip');
 JHtml::_('behavior.framework');
 
 //20140429 zoearth 定義一些常用到的變數
-define("COM_NAME",'com_zoearth_twcn_change');
-define("MODULE_NAME",'ZoearthTwcnChange');
+define("COM_NAME",'com_zoearth_img_check');
+define("MODULE_NAME",'ZoearthImgCheck');
 define('CONTROLLER_BASE',Juri::base().'index.php?option='.COM_NAME);
 //20140430 zoearth 這邊直接定義time zone 直接寫入datetime
 //date_default_timezone_set(JFactory::getConfig()->get('offset'));

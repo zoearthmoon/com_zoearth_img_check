@@ -1,22 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
-<extension type="component" version="2.5" method="upgrade">
-    <name>com_zoearth_twcn_change</name>
+<extension type="component" version="3.0" method="upgrade">
+    <name>com_zoearth_img_check</name>
     <version>1.0</version>
-    <author>plusdi.com</author>
+    <author>zoearthmoon@gmail.com</author>
     <authorEmail>zoearthmoon@gmail.com</authorEmail>
     <authorUrl>http://www.plusdi.com/</authorUrl>
-    <copyright>Copyright 2014 @plusdi.com</copyright>
-    <creationDate>2014-04-24</creationDate>
+    <copyright>Copyright 2015 @zoearth</copyright>
+    <creationDate>2014-04-10</creationDate>
     <description>
     <![CDATA[
     <div style="text-align:left">
         <blockquote>
-        <p>您好!這是[普拉斯數位整合]所開發的<h1>文字工具元件</h1></p>
+        <p>您好!這是zoearth所開發的<h1>圖片整理元件</h1></p>
         <small>主要功能項目有
             <ul>
-            <li>1.繁簡互轉</li>
-            <li>2.Google翻譯HTML整理</li>
-            <li>3.顏色選取器</li>
+            <li>1.搜尋沒有圖片的連結</li>
+            <li>2.搜尋沒有用到的圖片</li>
+            <li>3.搜尋名稱或大小圖片</li>
+            <li>4.批次取代圖片(或刪除)</li>
+            <li>5.</li>
         </small>
         </blockquote>
         <dl class="dl-horizontal">
@@ -24,30 +26,17 @@
         </dl>
     </div>
     ]]></description>
-    <scriptfile>script.zoearth_twcn_change.php</scriptfile>
-    <install>
-        <sql>
-            <file driver="mysql" charset="utf8">sql/install.utf8.sql</file>
-        </sql>
-    </install>
-    <files folder="components/com_zoearth_twcn_change">
-        <folder>controllers</folder>
-        <folder>css</folder>
-        <folder>images</folder>
-        <folder>models</folder>
-        <folder>views</folder>
-        <filename>zoearth_twcn_change.php</filename>
-    </files>
+    <scriptfile>script.zoearth_img_check.php</scriptfile>
     <administration>
         <menu>COM_ZOEARTH_TWCN_CHANGE</menu>
         <submenu>
-            <menu link="option=com_loan_customer" >COM_ZOEARTH_ADD_WORD</menu>
+            <menu link="option=com_zoearth_img_check" >COM_ZOEARTH_IMG_CHECK</menu>
         </submenu>
-        <files folder="administrator/components/com_zoearth_twcn_change">
+        <files folder="administrator/components/com_zoearth_img_check">
             <filename>index.html</filename>
             <filename>config.xml</filename>
             <filename>access.xml</filename>
-            <filename>zoearth_twcn_change.php</filename>
+            <filename>zoearth_img_check.php</filename>
             <folder>models</folder>
             <folder>helpers</folder>
             <folder>libraries</folder>
@@ -57,8 +46,8 @@
             <folder>sql</folder>
         </files>
         <languages folder="administrator/language">
-            <language tag="zh-TW">zh-TW/zh-TW.com_zoearth_twcn_change.ini</language>
-            <language tag="zh-TW">zh-TW/zh-TW.com_zoearth_twcn_change.sys.ini</language>
+            <language tag="zh-TW">zh-TW/zh-TW.com_zoearth_img_check.ini</language>
+            <language tag="zh-TW">zh-TW/zh-TW.com_zoearth_img_check.sys.ini</language>
         </languages>
     </administration>
     <config>

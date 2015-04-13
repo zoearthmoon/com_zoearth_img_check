@@ -4,8 +4,8 @@ defined('_JEXEC') or die ;
 class Com_Zoearth_Twcn_ChangeInstallerScript
 {
     
-    public $comName = "繁簡轉換文字工具";
-    public $comDir  = "com_zoearth_twcn_change";
+    public $comName = "圖片整理元件";
+    public $comDir  = "com_zoearth_img_check";
     
     public function postflight($type, $parent)
     {

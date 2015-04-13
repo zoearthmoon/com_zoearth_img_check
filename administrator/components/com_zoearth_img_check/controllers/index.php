@@ -4,10 +4,10 @@
 */
 defined('_JEXEC') or die('Restricted access');
 
-class ZoearthTwcnChangeControllerIndex extends JControllerLegacy
+class ZoearthImgCheckControllerIndex extends JControllerLegacy
 {
     function display($cachable = false, $urlparams = false)
     {
-        $this->setRedirect('index.php?option=com_zoearth_twcn_change&view=AddWord','', 'notice');
+        $this->setRedirect('index.php?option=com_zoearth_img_check&view=check','', 'notice');
     }
 }
