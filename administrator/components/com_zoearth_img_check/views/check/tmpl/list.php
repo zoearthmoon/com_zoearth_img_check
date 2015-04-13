@@ -97,14 +97,7 @@ function selectAll(btnObj)
     	</thead>
     	<tbody>
     		<tr>
-    		    <td>
-    		        <input type="checkbox" name="imgDataCheck" class="imgDataCheck" value="1" >
-    		    </td>
-    			<td></td>
-    			<td></td>
-    			<td></td>
-    			<td></td>
-    			<td></td>
+    		    <td colspan="6" >請使用上方搜尋功能</td>
     		</tr>
     	</tbody>
     </table>
