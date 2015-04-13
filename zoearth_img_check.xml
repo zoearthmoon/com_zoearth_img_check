@@ -28,7 +28,7 @@
     ]]></description>
     <scriptfile>script.zoearth_img_check.php</scriptfile>
     <administration>
-        <menu>COM_ZOEARTH_TWCN_CHANGE</menu>
+        <menu>COM_ZOEARTH_IMG_CHECK</menu>
         <submenu>
             <menu link="option=com_zoearth_img_check" >COM_ZOEARTH_IMG_CHECK</menu>
         </submenu>
