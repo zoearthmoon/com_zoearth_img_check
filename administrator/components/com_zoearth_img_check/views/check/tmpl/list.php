@@ -19,56 +19,80 @@ function getImgDatas(type)
     });
 }
 </script>
-<div class="alert">
-  <strong><?php echo JText::_('COM_ZIC_NOTE')?></strong><?php echo JText::_('COM_ZIC_NOTE_CONTENT')?>
+<div id="j-sidebar-container" class="span2">
+    <?php echo ZoeSayPath::outputMenu(); ?>
 </div>
-<form class="navbar-form">
-    <table class="table table-bordered">
-    <tr>
-        <td>搜尋內容</td>
-        <td>搜尋圖片</td>
-        <td>執行動作</td>
-    </tr>
-    <tr>
-        <td>
-            <button class="btn actionBtns" onclick="getImgDatas('search_no_img_src')" >沒有圖片的連結</button>
-        </td>
-        <td>
-            <button class="btn actionBtns" onclick="getImgDatas('search_no_used_img')" >沒有用到的圖片</button>
-            <button class="btn actionBtns" onclick="getImgDatas('search_params_img')" >名稱或大小圖片</button>
-        </td>
-        <td>
-            <button class="btn replace_img_to_img actionBtns" >取代圖片</button>
-            <button class="btn replace_img_to_jpg actionBtns" >壓縮圖片</button>
-        </td>
-    </tr>
+<div id="j-main-container" class="span10">
+    <div class="row-fluid ZoePath">
+    	<?php echo ZoeSayPath::showPath(); ?>
+    </div>
+    <div class="alert">
+      <strong><?php echo JText::_('COM_ZIC_NOTE')?></strong><?php echo JText::_('COM_ZIC_NOTE_CONTENT')?>
+    </div>
+    <form class="navbar-form">
+        <table class="table table-bordered">
+        <tr>
+            <td>搜尋內容</td>
+            <td>搜尋圖片</td>
+            <td>執行動作</td>
+        </tr>
+        <tr>
+            <td>
+                <button class="btn btn-info actionBtns" onclick="getImgDatas('search_no_img_src')" ><i class="icon-search fa search"></i>沒有圖片的連結</button>
+            </td>
+            <td>
+                <button class="btn btn-success actionBtns" onclick="getImgDatas('search_no_used_img')" ><i class="icon-search fa search"></i>沒有用到的圖片</button>
+                <table class="table table-bordered">
+                <tr>
+                    <td>
+                        <button class="btn btn-primary actionBtns" onclick="getImgDatas('search_params_img')" ><i class="icon-search fa search"></i>名稱或大小圖片</button><br>
+                        <div class="btn-group">
+                            <button class="btn" disabled>名稱</button>
+                            <input type="text" id="fileName" placeholder="請輸入名稱">
+                        </div>
+                        <div class="btn-group">
+                            <button class="btn" disabled>大小</button>
+                            <input type="text" id="fileSizeMin" placeholder="最小">
+                            <input type="text" id="fileSizeMax" placeholder="最大">
+                        </div>
+                    </td>
+                </tr>
+                </table>
+            </td>
+            <td>
+                <button class="btn btn-info replace_img_to_img actionBtns" ><i class="icon-share-alt fa fa-share-square-o"></i>取代圖片</button>
+                <button class="btn btn-success replace_img_to_jpg actionBtns" ><i class="icon-list fa fa-database"></i>壓縮圖片</button>
+                <button class="btn btn-danger replace_img_to_null actionBtns" ><i class="icon-trash fa fa-trash"></i>刪除圖片</button>
+            </td>
+        </tr>
+        </table>
+    </form>
+    <div id="tableDataDiv">
+    <table id="imgDatas" class="display table table-bordered" cellspacing="0" width="100%">
+    	<thead>
+    		<tr>
+    		    <th>
+    		        <input type="checkbox" name="imgDataCheck" class="imgDataCheck" value="1" >
+    		    </th>
+    			<th>圖片</th>
+    			<th>檔名</th>
+    			<th>大小</th>
+    			<th>日期</th>
+    			<th>資料</th>
+    		</tr>
+    	</thead>
+    	<tbody>
+    		<tr>
+    		    <td>
+    		        <input type="checkbox" name="imgDataCheck" class="imgDataCheck" value="1" >
+    		    </td>
+    			<td></td>
+    			<td></td>
+    			<td></td>
+    			<td></td>
+    			<td></td>
+    		</tr>
+    	</tbody>
     </table>
-</form>
-<div id="tableDataDiv">
-<table id="imgDatas" class="display table table-bordered" cellspacing="0" width="100%">
-	<thead>
-		<tr>
-		    <th>
-		        <input type="checkbox" name="imgDataCheck" class="imgDataCheck" value="1" >
-		    </th>
-			<th>圖片</th>
-			<th>檔名</th>
-			<th>大小</th>
-			<th>日期</th>
-			<th>資料</th>
-		</tr>
-	</thead>
-	<tbody>
-		<tr>
-		    <td>
-		        <input type="checkbox" name="imgDataCheck" class="imgDataCheck" value="1" >
-		    </td>
-			<td></td>
-			<td></td>
-			<td></td>
-			<td></td>
-			<td></td>
-		</tr>
-	</tbody>
-</table>
+    </div>
 </div>

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<access component="com_loan_customer" >
+<access component="com_zoearth_img_check" >
     <section name="component">
-        <action name="core.manage" title="COM_LOAN_ENTER" description="COM_LOAN_ENTER" />
-        <action name="core.admin" title="COM_LOAN_SETUP" description="COM_LOAN_SETUP" />
+        <action name="core.manage" title="JACTION_MANAGE" description="JACTION_MANAGE" />
+        <action name="core.admin" title="JACTION_ADMIN" description="JACTION_ADMIN" />
     </section>
 </access>

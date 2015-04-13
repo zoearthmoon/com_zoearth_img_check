@@ -1,16 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <config>
     <fields>
-        <fieldset name="component" addfieldpath="/administrator/components/com_z2/elements" >
-            <field name="limit" type="list" default="10" label="COM_LOAN_LIST_LIMIT" >
-                <option value="10">10</option>
-                <option value="20">20</option>
-                <option value="30">30</option>
+        <fieldset name="component" >
+            <field name="limit" type="list" default="50" label="COM_ZIC_MAX_FILE_LIST" >
+                <option value="50">50</option>
+                <option value="100">100</option>
+                <option value="200">200</option>
+                <option value="500">500</option>
             </field>
-            <field name="serviceCategory" type="z2category" default="" label="COM_LOAN_SERVICE_ITEM_CATEGORY" />
-            
-            <field name="topUsers" type="user" default="此會員可以修改已鎖定的申請記錄狀態" label="特殊管理會員" />
-            
         </fieldset>
         <fieldset name="permissions" label="JCONFIG_PERMISSIONS_LABEL" description="JCONFIG_PERMISSIONS_DESC">
             <field type="krdonationcodecheck"/>
