@@ -36,6 +36,7 @@ function getImgDatas(actionName)
         }
         else
         {
+            resetTable();
             jQuery('#imgDatas').dataTable({
                 "ajax": 'index.php?option=com_zoearth_img_check&view=check&task=ajax',
             });
@@ -48,6 +49,20 @@ function selectAll(btnObj)
 {
     jQuery(".itemCheckBox").attr('checked',jQuery(btnObj).attr('checked') == 'checked' ? true:false );
 }
+
+//重置table
+function resetTable()
+{
+    var html = '';
+    html += '<table id="imgDatas" class="display table table-bordered" cellspacing="0" width="100%">';
+    html += '<thead>';
+    html += '<tr><th>勾選</th><th>圖片</th><th>檔名</th><th>大小</th><th>日期</th><th>資料</th></tr>';
+    html += '</thead>';
+    html += '<tbody><tr><td colspan="6" >請使用上方搜尋功能</td></tr>';
+    html += '</tbody></table>';
+    jQuery("#imgDataTable").html(html);
+}
+
 </script>
 <div id="j-sidebar-container" class="span2">
     <?php echo ZoeSayPath::outputMenu(); ?>
@@ -124,6 +139,7 @@ function selectAll(btnObj)
         <input type="checkbox" onclick="selectAll(this)" >選擇
     </div>
     
+    <div id="imgDataTable">
     <table id="imgDatas" class="display table table-bordered" cellspacing="0" width="100%">
     	<thead>
     		<tr>
@@ -141,5 +157,6 @@ function selectAll(btnObj)
     		</tr>
     	</tbody>
     </table>
+    </div>
     </div>
 </div>
