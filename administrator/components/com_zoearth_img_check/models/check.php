@@ -20,7 +20,7 @@ class ZoearthImgCheckModelCheck extends ZoeModel
                 $tables = $this->DB->getTableList();
                 $app = JFactory::getApplication();
                 $prefix = $app->getCfg('dbprefix');
-                if (array_search($prefix.'_z2_items', $tables))
+                if (array_search($prefix.'z2_items', $tables))
                 {
                     $session->set('haveZ2',1);
                     self::$haveZ2 = 1;
@@ -65,6 +65,7 @@ class ZoearthImgCheckModelCheck extends ZoeModel
     {
         $session = JFactory::getSession();
         $session->clear('allImgSrc');
+        $session->clear('haveZ2');
     }
     
     //取得所有資料內文的檔案
@@ -110,7 +111,7 @@ class ZoearthImgCheckModelCheck extends ZoeModel
                     $images = $this->getContentImgSrc($row->content);
                     foreach ($images as $imgsrc)
                     {
-                        $allImgSrc[$imgsrc]['J_'.$row->id] = $row->id;
+                        $allImgSrc[$imgsrc]['J_'.$row->id] = 'J_'.$row->id;
                     }
                 }
             }

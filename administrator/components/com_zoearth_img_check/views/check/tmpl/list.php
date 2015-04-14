@@ -10,7 +10,7 @@ $srcPath = JUri::base().'components/com_zoearth_img_check/media/js/DataTables-1.
 <script type="text/javascript" language="javascript" src="<?php echo $srcPath?>js/jquery.dataTables.js"></script>
 <script language="Javascript">
 //刪除暫存
-function cleanSession
+function cleanSession()
 {
     var dataUrl = 'index.php?option=com_zoearth_img_check&view=check&task=cleanSession';
     jQuery.post(dataUrl, {},function(data){
