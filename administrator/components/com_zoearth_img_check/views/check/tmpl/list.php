@@ -87,9 +87,9 @@ function selectAll(btnObj)
                             <input type="text" id="fileName" name="fileName" placeholder="請輸入名稱">
                         </div>
                         <div class="btn-group">
-                            <button type="button" class="btn" disabled>大小</button>
-                            <input type="text" id="fileSizeMin" name="fileSizeMin" placeholder="最小">
-                            <input type="text" id="fileSizeMax" name="fileSizeMax" placeholder="最大">
+                            <button type="button" class="btn" disabled>大小KB</button>
+                            <input type="text" id="fileSizeMin" name="fileSizeMin" placeholder="最小KB">
+                            <input type="text" id="fileSizeMax" name="fileSizeMax" placeholder="最大KB">
                         </div>
                     </td>
                 </tr>
@@ -104,7 +104,7 @@ function selectAll(btnObj)
                 
                 <table class="table table-bordered" >
                 <tr><td>
-                <button type="button" class="btn btn-success actionBtns" onclick="actionImgs('replace_img_to_jpg')" ><i class="icon-list fa fa-database"></i>壓縮圖片</button><br>
+                <button type="button" class="btn btn-success actionBtns" onclick="actionImgs('replace_img_to_jpg')" ><i class="icon-list fa fa-database"></i>壓縮圖片為JPG並且修改資料刪除原本檔案</button><br>
                 </td></tr>
                 </table>
                 

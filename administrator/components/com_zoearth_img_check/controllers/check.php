@@ -71,6 +71,7 @@ class ZoearthImgCheckControllerCheck extends ZoeController
                 }
             }
         }
+        //尋找未使用的圖片
         else if ($actionName == 'search_no_used_img')
         {
             //取得內容資料
@@ -93,9 +94,59 @@ class ZoearthImgCheckControllerCheck extends ZoeController
             }
             
         }
+        //尋找圖片
         else if ($actionName == 'search_params_img')
         {
-        
+            //取得內容資料
+            $items = $Check_DB->getAllImgSrc();
+            $files = $Check_DB->getAllImgFiles();
+            
+            $fileName    = trim(JRequest::getVar('fileName'));
+            $fileSizeMin = JRequest::getVar('fileSizeMin');
+            $fileSizeMax = JRequest::getVar('fileSizeMax');
+            
+            if (!($fileName != '' || $fileSizeMin > 0 || $fileSizeMax > 0 ))
+            {
+                echo json_encode(array('result'=>0,'message'=>'ERROR 0110 search params'));exit();
+            }
+            
+            foreach ($files as $imgSrc=>$imgData)
+            {
+                $getFile = TRUE;
+                if ($fileName != '')
+                {
+                    if (!strpos(' '.$imgSrc, $fileName))
+                    {
+                        $getFile = FALSE;
+                    }
+                }
+                if ($fileSizeMin > 0 )
+                {
+                    if (!($imgData['size'] >= $fileSizeMin*1000))
+                    {
+                        $getFile = FALSE;
+                    }
+                }
+                if ($fileSizeMax > 0 )
+                {
+                    if (!($imgData['size'] <= $fileSizeMax*1000))
+                    {
+                        $getFile = FALSE;
+                    }
+                }
+                if ($getFile)
+                {
+                    $res[] = array(
+                            '<input type="checkbox" name="imgItems[]" value="'.$imgSrc.'" class="itemCheckBox" >',
+                            '<img src="'.JUri::root().$imgSrc.'" width="50">',
+                            $imgSrc,
+                            ceil($imgData['size']/1000).' KB',
+                            date('Y-m-d',$imgData['time']),
+                            isset($items[$imgSrc]) ? implode(',',$items[$imgSrc]):'--',
+                    );
+                }
+            }
+            
         }
         else
         {
