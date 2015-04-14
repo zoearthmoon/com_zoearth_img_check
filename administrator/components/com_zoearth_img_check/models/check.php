@@ -48,7 +48,13 @@ class ZoearthImgCheckModelCheck extends ZoeModel
         {
             foreach ($matches[1] as $src)
             {
-                $images[] = str_replace('\/','/',$src);
+                $src = trim($src);
+                $src = str_replace('\/','/',$src);
+                if (substr($src,0,1) == '/')
+                {
+                    $src = substr($src,1);
+                }
+                $images[] = $src;
             }
         }
         return $images;
@@ -80,7 +86,7 @@ class ZoearthImgCheckModelCheck extends ZoeModel
                     foreach ($images as $imgsrc)
                     {
                         $imgsrc = trim($imgsrc);
-                        $allImgSrc[$imgsrc]['J_'.$row->id] = $row->id;
+                        $allImgSrc[$imgsrc]['J_'.$row->id] = 'J_'.$row->id;
                     }
                 }
             }
@@ -97,7 +103,6 @@ class ZoearthImgCheckModelCheck extends ZoeModel
                     $images = $this->getContentImgSrc($row->content);
                     foreach ($images as $imgsrc)
                     {
-                        $imgsrc = trim($imgsrc);
                         $allImgSrc[$imgsrc]['J_'.$row->id] = $row->id;
                     }
                 }
@@ -106,34 +111,5 @@ class ZoearthImgCheckModelCheck extends ZoeModel
             $session->set('allImgSrc',$allImgSrc);
         }
         return $allImgSrc;
-    }
-    
-    //20140414 zoearth 搜尋資料
-    public function searchNoImgSrc()
-    {
-        //取得資料
-        $allImgSrc = $this->getAllImgSrc();
-        if (!(is_array($allImgSrc) && count($allImgSrc) > 0 ))
-        {
-            return FALSE;
-        }
-        
-        foreach ($allImgSrc as $imgSrc=>$dataArray)
-        {
-            echo $imgSrc."\r\n";
-        }
-        
-        
-        
-        exit();
-        
-        
-        
-        
-        
-        
-        
-        
-        return $result;
     }
 }

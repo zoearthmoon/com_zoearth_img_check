@@ -35,9 +35,9 @@ class ZoearthImgCheckControllerCheck extends ZoeController
     
     //20150413 zoearth 搜尋檔案
     function searchFiles()
-    {
+    {        
         $res = array();
-        $res['data'] = array();
+        //$res['data'] = array();
         
         //取得設定
         $limit = JComponentHelper::getParams(COM_NAME)->get('limit',50);
@@ -53,29 +53,58 @@ class ZoearthImgCheckControllerCheck extends ZoeController
         if ($actionName == 'search_no_img_src')
         {
             $Check_DB = $this->getModel('Check');
-            $items = $Check_DB->searchNoImgSrc();
+            $items = $Check_DB->getAllImgSrc();
+            
+            foreach ($items as $imgSrc=>$imgDatas)
+            {
+                if (!(is_file(JPATH_ROOT.DS.$imgSrc)))
+                {
+                    $res[] = array(
+                            '<input type="checkbox" name="imgItems[]" value="'.$imgSrc.'" class="itemCheckBox" >',
+                            '-無圖片-',
+                            $imgSrc,
+                            '--',
+                            '--',
+                            implode(',',$imgDatas),
+                    );                    
+                }
+            }
+        }
+        else if ($actionName == 'search_no_used_img')
+        {
+            
+        }
+        else if ($actionName == 'search_params_img')
+        {
+        
+        }
+        else
+        {
+            echo json_encode(array('result'=>0,'message'=>'ERROR 0083 actionName'));exit();
         }
         
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        echo json_encode($res);
+        //存入session
+        $session   = JFactory::getSession();
+        $session->set('tmpRes',$res);
+        if (!(is_array($res) && count($res) > 0 ))
+        {
+            echo json_encode(array('result'=>0,'message'=>'找不到資料!'));
+        }
+        else
+        {
+            echo json_encode(array('result'=>1,'message'=>''));
+        }
         exit();
     }
     
     //20150414 zoearth 取得資料
     function ajax()
     {
-        
+        //存入session
+        $session   = JFactory::getSession();
+        $res = $session->set('tmpRes');
+        echo json_encode(array('data'=>$res));
+        exit();
     }
     
     //20140424 zoearth 取得編輯介面會需要用到的選單
