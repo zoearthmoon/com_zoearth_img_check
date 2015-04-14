@@ -48,16 +48,8 @@ class ZoearthImgCheckModelCheck extends ZoeModel
         {
             foreach ($matches[1] as $src)
             {
-                $src = trim($src);
-                $src = str_replace('\/','/',$src);
-                if (substr($src,0,1) == '/')
-                {
-                    $src = substr($src,1);
-                }
-                
-                //是否為圖片(只針對圖片處理)
-                $ext = substr($src,-3,3);
-                if (in_array(strtolower($ext),array('jpg','peg','png','bmp','gif')))
+                $src = $this->getSRC($src);
+                if ($src)
                 {
                     $images[] = $src;
                 }
@@ -66,12 +58,86 @@ class ZoearthImgCheckModelCheck extends ZoeModel
         return $images;
     }
     
+    //取得SRC
+    public function getSRC($src)
+    {
+        $src = trim($src);
+        $src = str_replace('\/','/',$src);
+        $src = str_replace(JPATH_ROOT,'',$src);
+        $src = str_replace('\\','/',$src);
+        
+        if (substr($src,0,1) == '/')
+        {
+            $src = substr($src,1);
+        }
+        
+        //是否為圖片(只針對圖片處理)
+        $ext = substr($src,-3,3);
+        if (in_array(strtolower($ext),array('jpg','peg','png','bmp','gif')))
+        {
+            return $src;
+        }
+        return FALSE;
+    }
+    
     //清除暫存
     public function cleanSession()
     {
         $session = JFactory::getSession();
         $session->clear('allImgSrc');
         $session->clear('haveZ2');
+        $session->clear('allImgFile');
+    }
+    
+    //讀取資料夾
+    public function loadDir($dir,&$files)
+    {
+        if ($handle = opendir($dir))
+        {
+            while (false !== ($file = readdir($handle)))
+            {
+                if ($file == '.' || $file == '..' || substr($file,0,1) == '.')
+                {
+                    continue;
+                }
+                $file  = $dir.DS.$file;
+                
+                if (is_dir($file))
+                {
+                    $this->loadDir($file,$files);
+                }
+                else if (is_file($file))
+                {
+                    $src = $this->getSRC($file);
+                    if ($src)
+                    {
+                        $files[$src] = array(
+                                'time' => filemtime($file),
+                                'size' => filesize($file),
+                                ); 
+                    }
+                }
+            }
+        }
+    }
+    
+    //取得所有檔案
+    public function getAllImgFiles()
+    {
+        $session    = JFactory::getSession();
+        $allImgFile = $session->get('allImgFile');
+        
+        if (!$allImgFile)
+        {
+            $dir = JPATH_ROOT.DS.'images';
+            $files = array();
+            $this->loadDir($dir,$files);
+            
+            $allImgFile = $files;
+            //暫存
+            $session->set('allImgFile',$allImgFile);
+        }
+        return $allImgFile;
     }
     
     //取得所有資料內文的檔案

@@ -50,9 +50,10 @@ class ZoearthImgCheckControllerCheck extends ZoeController
         }
         
         //搜尋內文中的 images/ 資料
+        $Check_DB = $this->getModel('Check');
         if ($actionName == 'search_no_img_src')
         {
-            $Check_DB = $this->getModel('Check');
+            //取得內容資料
             $items = $Check_DB->getAllImgSrc();
             
             foreach ($items as $imgSrc=>$imgDatas)
@@ -72,6 +73,24 @@ class ZoearthImgCheckControllerCheck extends ZoeController
         }
         else if ($actionName == 'search_no_used_img')
         {
+            //取得內容資料
+            $items = $Check_DB->getAllImgSrc();
+            $files = $Check_DB->getAllImgFiles();
+            
+            foreach ($files as $imgSrc=>$imgData)
+            {
+                if (!isset($items[$imgSrc]))
+                {
+                    $res[] = array(
+                            '<input type="checkbox" name="imgItems[]" value="'.$imgSrc.'" class="itemCheckBox" >',
+                            '<img src="'.JUri::root().$imgSrc.'" width="50">',
+                            $imgSrc,
+                            ceil($imgData['size']/1000).' KB',
+                            date('Y-m-d',$imgData['time']),
+                            '--',
+                    );
+                }
+            }
             
         }
         else if ($actionName == 'search_params_img')
