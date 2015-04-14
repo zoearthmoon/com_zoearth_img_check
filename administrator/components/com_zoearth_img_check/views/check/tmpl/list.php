@@ -133,11 +133,7 @@ function resetTable()
         </table>
     </form>
     <div id="tableDataDiv" style="min-height: 500px">
-    <legend>Legend</legend>
-    
-    <div class="control-group">
-        <input type="checkbox" onclick="selectAll(this)" >選擇
-    </div>
+    <legend><input type="checkbox" onclick="selectAll(this)" >選擇</legend>
     
     <div id="imgDataTable">
     <table id="imgDatas" class="display table table-bordered" cellspacing="0" width="100%">
