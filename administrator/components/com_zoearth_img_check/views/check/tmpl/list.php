@@ -19,8 +19,26 @@ function cleanSession()
         {
             alert(data.message);
         }
+        else
+        {
+            alert('刪除成功');
+        }
     },'json');
 }
+
+//20150414 zoearth 動作
+function actionImgs(actionName)
+{
+    var dataUrl = 'index.php?'+jQuery("#imgDataTable").serialize()+'&option=com_zoearth_img_check&view=check&task=editFiles&actionName='+actionName;
+    jQuery.post(dataUrl, {},function(data){
+
+        if (data.result != '1')
+        {
+            alert(data.message);
+        }
+    },'json');
+}
+
 //20150413 zoearth 取得
 function getImgDatas(actionName)
 {
@@ -135,7 +153,7 @@ function resetTable()
     <div id="tableDataDiv" style="min-height: 500px">
     <legend><input type="checkbox" onclick="selectAll(this)" >選擇</legend>
     
-    <div id="imgDataTable">
+    <form id="imgDataTable">
     <table id="imgDatas" class="display table table-bordered" cellspacing="0" width="100%">
     	<thead>
     		<tr>
@@ -153,6 +171,6 @@ function resetTable()
     		</tr>
     	</tbody>
     </table>
-    </div>
+    </form>
     </div>
 </div>

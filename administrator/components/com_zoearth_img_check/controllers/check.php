@@ -33,9 +33,33 @@ class ZoearthImgCheckControllerCheck extends ZoeController
         $view->display();
     }
     
+    //20150413 zoearth 修改檔案
+    function editFiles()
+    {
+        //執行動作
+        $actionName = JRequest::getVar('actionName');
+        if (!in_array($actionName,array('replace_img_to_jpg')))
+        {
+            echo json_encode(array('result'=>0,'message'=>'ERROR 0043 actionName'));exit();
+        }
+        
+        //開始替換圖片
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+    }
+    
     //20150413 zoearth 搜尋檔案
     function searchFiles()
-    {        
+    {
         $res = array();
         //$res['data'] = array();
         
