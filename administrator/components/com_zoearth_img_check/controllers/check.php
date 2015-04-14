@@ -8,6 +8,8 @@ define('CONTROLLER','Check');
 define('CONTROLLER_NAME','文字增修');
 define('CONTROLLER_BASE_URL',Juri::base().'index.php?option='.COM_NAME.'&view=check');
 
+jimport('joomla.application.component.helper');
+
 class ZoearthImgCheckControllerCheck extends ZoeController
 {
     function display($cachable = false, $urlparams = false)
@@ -35,21 +37,45 @@ class ZoearthImgCheckControllerCheck extends ZoeController
     function searchFiles()
     {
         $res = array();
-        
         $res['data'] = array();
-        for($i=0;$i<=50;$i++)
+        
+        //取得設定
+        $limit = JComponentHelper::getParams(COM_NAME)->get('limit',50);
+        
+        //執行查詢
+        $actionName = JRequest::getVar('actionName');
+        if (!in_array($actionName,array('search_no_img_src','search_no_used_img','search_params_img')))
         {
-            $res['data'][] = array(
-                    '<input type="checkbox" value="1" class="itemCheckBox" >',
-                    'src'.rand(1,5000).'.jpg',
-                    'img'.rand(1,5000).'.jpg',
-                    rand(1,5000).'KB',
-                    '2015-04-'.rand(1,30),
-                    '--',
-            );
+            echo json_encode(array('result'=>0,'message'=>'ERROR 0045 actionName'));exit();
         }
+        
+        //搜尋內文中的 images/ 資料
+        if ($actionName == 'search_no_img_src')
+        {
+            $Check_DB = $this->getModel('Check');
+            $items = $Check_DB->searchNoImgSrc();
+        }
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
         echo json_encode($res);
         exit();
+    }
+    
+    //20150414 zoearth 取得資料
+    function ajax()
+    {
+        
     }
     
     //20140424 zoearth 取得編輯介面會需要用到的選單

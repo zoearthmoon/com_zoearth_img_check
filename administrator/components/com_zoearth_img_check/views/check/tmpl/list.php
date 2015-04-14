@@ -14,10 +14,21 @@ function getImgDatas(actionName)
 {
     var addUrl  = '&task=searchFiles&actionName='+actionName;
     var dataUrl = 'index.php?'+jQuery("#imgCheckForm").serialize()+addUrl;
-    
-    jQuery('#imgDatas').dataTable({
-        "ajax": dataUrl,
-    });
+
+    //先取得結果
+    jQuery.post(dataUrl, {},function(data){
+
+        if (data.result != '1')
+        {
+            alert(data.message);
+        }
+        else
+        {
+            jQuery('#imgDatas').dataTable({
+                "ajax": 'index.php?option=com_zoearth_img_check&view=check&task=ajax',
+            });
+        }
+    },'json');
 }
 
 //20150413 zoearth 選擇全部
