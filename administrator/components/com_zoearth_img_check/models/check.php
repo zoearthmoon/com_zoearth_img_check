@@ -60,6 +60,13 @@ class ZoearthImgCheckModelCheck extends ZoeModel
         return $images;
     }
     
+    //清除暫存
+    public function cleanSession()
+    {
+        $session = JFactory::getSession();
+        $session->clear('allImgSrc');
+    }
+    
     //取得所有資料內文的檔案
     public function getAllImgSrc()
     {

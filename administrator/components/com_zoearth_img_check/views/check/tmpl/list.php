@@ -9,6 +9,18 @@ $srcPath = JUri::base().'components/com_zoearth_img_check/media/js/DataTables-1.
 <link rel="stylesheet" type="text/css" href="<?php echo $srcPath?>css/jquery.dataTables.css">
 <script type="text/javascript" language="javascript" src="<?php echo $srcPath?>js/jquery.dataTables.js"></script>
 <script language="Javascript">
+//刪除暫存
+function cleanSession
+{
+    var dataUrl = 'index.php?option=com_zoearth_img_check&view=check&task=cleanSession';
+    jQuery.post(dataUrl, {},function(data){
+
+        if (data.result != '1')
+        {
+            alert(data.message);
+        }
+    },'json');
+}
 //20150413 zoearth 取得
 function getImgDatas(actionName)
 {
@@ -47,6 +59,9 @@ function selectAll(btnObj)
     <div class="alert">
       <strong><?php echo JText::_('COM_ZIC_NOTE')?></strong><?php echo JText::_('COM_ZIC_NOTE_CONTENT')?>
     </div>
+    
+    <button type="button" class="btn btn-warning" onclick="cleanSession()" ><i class="icon-refresh fa refresh"></i>刪除暫存</button>
+    
     <form id="imgCheckForm" class="navbar-form">
         <input type="hidden" value="com_zoearth_img_check" name="option">
         <input type="hidden" value="check" name="view">

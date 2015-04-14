@@ -107,6 +107,14 @@ class ZoearthImgCheckControllerCheck extends ZoeController
         exit();
     }
     
+    //清除暫存
+    function cleanSession()
+    {
+        $Check_DB = $this->getModel('Check');
+        $Check_DB->cleanSession();
+        echo json_encode(array('result'=>1,'message'=>''));
+    }
+    
     //20140424 zoearth 取得編輯介面會需要用到的選單
     function getOptions()
     {
