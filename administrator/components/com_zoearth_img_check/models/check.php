@@ -54,7 +54,13 @@ class ZoearthImgCheckModelCheck extends ZoeModel
                 {
                     $src = substr($src,1);
                 }
-                $images[] = $src;
+                
+                //是否為圖片(只針對圖片處理)
+                $ext = substr($src,-3,3);
+                if (in_array(strtolower($ext),array('jpg','peg','png','bmp','gif')))
+                {
+                    $images[] = $src;
+                }
             }
         }
         return $images;
