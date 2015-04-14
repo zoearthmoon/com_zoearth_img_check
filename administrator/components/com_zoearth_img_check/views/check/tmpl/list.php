@@ -96,9 +96,23 @@ function selectAll(btnObj)
                 </table>
             </td>
             <td>
+                <table class="table table-bordered" >
+                <tr><td>
                 <button type="button" class="btn btn-info actionBtns" disabled title="有時間在補上"><i class="icon-share-alt fa fa-share-square-o"></i>取代圖片</button>
-                <button type="button" class="btn btn-success actionBtns" onclick="actionImgs('replace_img_to_jpg')" ><i class="icon-list fa fa-database"></i>壓縮圖片</button>
+                </td></tr>
+                </table>
+                
+                <table class="table table-bordered" >
+                <tr><td>
+                <button type="button" class="btn btn-success actionBtns" onclick="actionImgs('replace_img_to_jpg')" ><i class="icon-list fa fa-database"></i>壓縮圖片</button><br>
+                </td></tr>
+                </table>
+                
+                <table class="table table-bordered" >
+                <tr><td>
                 <button type="button" class="btn btn-danger actionBtns" disabled title="有時間在補上" ><i class="icon-trash fa fa-trash"></i>刪除圖片</button>
+                </td></tr>
+                </table>
             </td>
         </tr>
         </table>
