@@ -52,22 +52,16 @@ class ZoearthImgCheckModelCheck extends ZoeModel
     {
         if (is_array($imgItems) && count($imgItems) > 0 )
         {
-            foreach ($imgItems as $itemKey)
+            if ($this->setContentData($imgItems,$imgSrc))
             {
-                $itemKey  = explode('_',$itemKey);
-                $dataType = $itemKey[0];
-                $dataId   = $itemKey[1];
-                if ($this->setContentData($dataType,$dataId,$imgSrc))
-                {
-                    return FALSE;
-                }
+                return FALSE;
             }
         }
         return TRUE;
     }
     
     //替換功能
-    public function setContentData($type,$id,$imgSrc)
+    public function setContentData($imgItems,$imgSrc)
     {
         $db = $this->DB;
         //原本
@@ -95,30 +89,38 @@ class ZoearthImgCheckModelCheck extends ZoeModel
                 $imgSrc     => $newImgSrc,
                 );
         
-        switch ($type)
+        foreach ($imgItems as $keySet)
         {
-            case "J":
-                $Query = $db->getQuery(true);
-                $Query = $Query->select('i.id,i.introtext,i.fulltext')
+            $keySet = explode('_',$keySet);
+            $type   = $keySet[0];
+            $dataId = $keySet[1];
+            
+            switch ($type)
+            {
+                case "J":
+                    $Query = $db->getQuery(true);
+                    $Query = $Query->select('i.id,i.introtext,i.fulltext')
                     ->from('#__content AS i')
-                    ->where('i.id = '.(int)$id);
-                $db->setQuery($Query);
-                $row = $db->loadObject();
-                if (!$row)
-                {
-                    return FALSE;
-                }
-                $row->introtext = strtr($row->introtext, $replaceArray);
-                $row->fulltext  = strtr($row->fulltext, $replaceArray);                
-                
-                $updateQuery = "UPDATE #__content SET 
+                    ->where('i.id = '.(int)$dataId);
+                    $db->setQuery($Query);
+                    $row = $db->loadObject();
+                    if (!$row)
+                    {
+                        return FALSE;
+                    }
+                    $row->introtext = strtr($row->introtext, $replaceArray);
+                    $row->fulltext  = strtr($row->fulltext, $replaceArray);
+            
+                    $updateQuery = "UPDATE #__content SET
                         introtext = ".$db->quote($row->introtext).",
                         fulltext = ".$db->quote($row->fulltext)."
-                        WHERE id = ".(int)$id;
-                $db->setQuery($updateQuery);
-                $db->execute();
-                break;
+                        WHERE id = ".(int)$dataId;
+                    $db->setQuery($updateQuery);
+                    $db->execute();
+                    break;
+            }
         }
+        return TRUE;
     }
     
     static $haveZ2;
