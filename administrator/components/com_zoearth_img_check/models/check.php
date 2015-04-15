@@ -12,6 +12,16 @@ class ZoearthImgCheckModelCheck extends ZoeModel
     //先行產生圖片
     public function preRenderImgToJpg($imgSrc)
     {
+        //檢查DIR
+        if (!is_dir(JPATH_ROOT.DS.'cache'))
+        {
+            mkdir(JPATH_ROOT.DS.'cache');
+        }
+        if (!is_dir(JPATH_ROOT.DS.'cache'.DS.'com_z2'))
+        {
+            mkdir(JPATH_ROOT.DS.'cache'.DS.'com_z2');
+        }
+        
         $ext = strtolower(substr($imgSrc,-3,3));
         try 
         {
@@ -36,8 +46,8 @@ class ZoearthImgCheckModelCheck extends ZoeModel
                     break;
             }
             $tmpName = 'TMP_'.md5($imgSrc).'.jpg';
-            @unlink(JPATH_ROOT.'cache/com_z2/'.$tmpName);
-            ImageJPEG($im,JPATH_ROOT.'cache/com_z2/'.$tmpName);
+            @unlink(JPATH_ROOT.DS.'cache'.DS.'com_z2'.DS.$tmpName);
+            @ImageJPEG($im,JPATH_ROOT.DS.'cache'.DS.'com_z2'.DS.$tmpName);
             return TRUE;
         }
         catch (Exception $e)
@@ -47,12 +57,20 @@ class ZoearthImgCheckModelCheck extends ZoeModel
         return FALSE;
     }
     
+    //替換圖片
+    public function replcaeImgToJpg($imgSrc)
+    {
+        @unlink(JPATH_ROOT.DS.$imgSrc);
+        $newImgSrc  = preg_replace('/(.*)\.([a-z]*)$/','$1.jpg',$imgSrc);
+        @copy(JPATH_ROOT.DS.'cache'.DS.'com_z2'.DS.'TMP_'.md5($imgSrc).'.jpg',JPATH_ROOT.DS.$newImgSrc);
+    }
+    
     //替換內容
     public function replaceContent($imgSrc,$imgItems=array())
     {
         if (is_array($imgItems) && count($imgItems) > 0 )
         {
-            if ($this->setContentData($imgItems,$imgSrc))
+            if (!$this->setContentData($imgItems,$imgSrc))
             {
                 return FALSE;
             }
@@ -100,8 +118,8 @@ class ZoearthImgCheckModelCheck extends ZoeModel
                 case "J":
                     $Query = $db->getQuery(true);
                     $Query = $Query->select('i.id,i.introtext,i.fulltext')
-                    ->from('#__content AS i')
-                    ->where('i.id = '.(int)$dataId);
+                        ->from('#__content AS i')
+                        ->where('i.id = '.(int)$dataId);
                     $db->setQuery($Query);
                     $row = $db->loadObject();
                     if (!$row)
@@ -112,8 +130,8 @@ class ZoearthImgCheckModelCheck extends ZoeModel
                     $row->fulltext  = strtr($row->fulltext, $replaceArray);
             
                     $updateQuery = "UPDATE #__content SET
-                        introtext = ".$db->quote($row->introtext).",
-                        fulltext = ".$db->quote($row->fulltext)."
+                        `introtext` = ".$db->quote($row->introtext).",
+                        `fulltext` = ".$db->quote($row->fulltext)."
                         WHERE id = ".(int)$dataId;
                     $db->setQuery($updateQuery);
                     $db->execute();

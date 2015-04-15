@@ -36,6 +36,7 @@ class ZoearthImgCheckControllerCheck extends ZoeController
     //20150413 zoearth 修改檔案
     function editFiles()
     {
+        $Check_DB = $this->getModel('Check');
         //執行動作
         $actionName = JRequest::getVar('actionName');
         if (!in_array($actionName,array('replace_img_to_jpg')))
@@ -60,8 +61,7 @@ class ZoearthImgCheckControllerCheck extends ZoeController
         }
         
         //開始替換內文
-        $this->cleanSession();//開始替換就先把暫存刪除
-        $Check_DB = $this->getModel('Check');
+        $Check_DB->cleanSession();//開始替換就先把暫存刪除
         foreach ($imgItems as $imgSrc)
         {
             //先嘗試壓縮圖片

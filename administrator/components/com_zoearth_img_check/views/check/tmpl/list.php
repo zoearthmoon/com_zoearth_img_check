@@ -31,11 +31,7 @@ function actionImgs(actionName)
 {
     var dataUrl = 'index.php?'+jQuery("#imgDataTable").serialize()+'&option=com_zoearth_img_check&view=check&task=editFiles&actionName='+actionName;
     jQuery.post(dataUrl, {},function(data){
-
-        if (data.result != '1')
-        {
-            alert(data.message);
-        }
+        alert(data.message);
     },'json');
 }
 
