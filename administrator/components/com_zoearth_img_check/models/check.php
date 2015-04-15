@@ -7,6 +7,120 @@ jimport('joomla.application.component.model');
 
 class ZoearthImgCheckModelCheck extends ZoeModel
 {
+    //替換圖片
+    
+    //先行產生圖片
+    public function preRenderImgToJpg($imgSrc)
+    {
+        $ext = strtolower(substr($imgSrc,-3,3));
+        try 
+        {
+            switch ($ext)
+            {
+                case "jpg":
+                case "peg":
+                    $im = imagecreatefromjpeg(JPATH_ROOT.DS.$imgSrc);
+                    break;
+                case "png":
+                    $im = imagecreatefrompng(JPATH_ROOT.DS.$imgSrc);
+                    break;
+                case "gif":
+                    $im = imagecreatefromgif(JPATH_ROOT.DS.$imgSrc);
+                    break;
+                case "bmp":
+                    require_once JPATH_ADMINISTRATOR.'components'.DS.'com_zoearth_img_check'.DS.'libraries'.DS.'BMP.php';
+                    $im = imagecreatefrombmp(JPATH_ROOT.DS.$imgSrc);
+                    break;
+                default:
+                    return FALSE;
+                    break;
+            }
+            $tmpName = 'TMP_'.md5($imgSrc).'.jpg';
+            @unlink(JPATH_ROOT.'cache/com_z2/'.$tmpName);
+            ImageJPEG($im,JPATH_ROOT.'cache/com_z2/'.$tmpName);
+            return TRUE;
+        }
+        catch (Exception $e)
+        {
+            return FALSE;
+        }
+        return FALSE;
+    }
+    
+    //替換內容
+    public function replaceContent($imgSrc,$imgItems=array())
+    {
+        if (is_array($imgItems) && count($imgItems) > 0 )
+        {
+            foreach ($imgItems as $itemKey)
+            {
+                $itemKey  = explode('_',$itemKey);
+                $dataType = $itemKey[0];
+                $dataId   = $itemKey[1];
+                if ($this->setContentData($dataType,$dataId,$imgSrc))
+                {
+                    return FALSE;
+                }
+            }
+        }
+        return TRUE;
+    }
+    
+    //替換功能
+    public function setContentData($type,$id,$imgSrc)
+    {
+        $db = $this->DB;
+        //原本
+        $imgSrcJson = json_encode(array(0=>$imgSrc));
+        $imgSrcJson = str_replace('["', '',$imgSrcJson);
+        $imgSrcJson = str_replace('"]', '',$imgSrcJson);
+        
+        $imgSrcHtml = htmlentities($imgSrc);
+        $imgSrcUrl  = urlencode($imgSrc);
+        
+        //新的
+        $newImgSrc  = preg_replace('/(.*)\.([a-z]*)$/','$1.jpg',$imgSrc);
+        
+        $newImgSrcJson = json_encode(array(0=>$newImgSrc));
+        $newImgSrcJson = str_replace('["', '',$newImgSrcJson);
+        $newImgSrcJson = str_replace('"]', '',$newImgSrcJson);
+        
+        $newImgSrcHtml = htmlentities($newImgSrc);
+        $newImgSrcUrl  = urlencode($newImgSrc);
+        
+        $replaceArray = array(
+                $imgSrcJson => $newImgSrcJson,
+                $imgSrcHtml => $newImgSrcHtml,
+                $imgSrcUrl  => $newImgSrcUrl,
+                $imgSrc     => $newImgSrc,
+                );
+        
+        switch ($type)
+        {
+            case "J":
+                $Query = $db->getQuery(true);
+                $Query = $Query->select('i.id,i.introtext,i.fulltext')
+                    ->from('#__content AS i')
+                    ->where('i.id = '.(int)$id);
+                $db->setQuery($Query);
+                $row = $db->loadObject();
+                if (!$row)
+                {
+                    return FALSE;
+                }
+                $row->introtext = strtr($row->introtext, $replaceArray);
+                $row->fulltext  = strtr($row->fulltext, $replaceArray);                
+                
+                $updateQuery = "UPDATE #__content SET 
+                        introtext = ".$db->quote($row->introtext).",
+                        fulltext = ".$db->quote($row->fulltext)."
+                        WHERE id = ".(int)$id;
+                $db->setQuery($updateQuery);
+                $db->execute();
+                break;
+        }
+    }
+    
     static $haveZ2;
     //有哪些文章table
     public function haveZ2Tables()

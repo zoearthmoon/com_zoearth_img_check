@@ -43,18 +43,44 @@ class ZoearthImgCheckControllerCheck extends ZoeController
             echo json_encode(array('result'=>0,'message'=>'ERROR 0043 actionName'));exit();
         }
         
-        //開始替換圖片
+        //取得圖片
+        $imgItems = JRequest::getVar('imgItems');
+        if (!(is_array($imgItems) && count($imgItems) > 0 ))
+        {
+            echo json_encode(array('result'=>0,'message'=>'ERROR 0050 imgItems '));exit();
+        }
+        $items = $Check_DB->getAllImgSrc();
+        $files = $Check_DB->getAllImgFiles();
+        foreach ($imgItems as $imgSrc)
+        {
+            if (!isset($files[$imgSrc]))
+            {
+                echo json_encode(array('result'=>0,'message'=>'ERROR 0059 no img '));exit();
+            }
+        }
         
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
+        //開始替換內文
+        $this->cleanSession();//開始替換就先把暫存刪除
+        $Check_DB = $this->getModel('Check');
+        foreach ($imgItems as $imgSrc)
+        {
+            //先嘗試壓縮圖片
+            if (!$Check_DB->preRenderImgToJpg($imgSrc))
+            {
+                echo json_encode(array('result'=>0,'message'=>'ERROR 0070 preRenderImgToJpg '));exit();
+            }
+            
+            //替換成功 則開始替換圖片
+            if ($Check_DB->replaceContent($imgSrc,(isset($items[$imgSrc]) ? $items[$imgSrc]:array())))
+            {
+                $Check_DB->replcaeImgToJpg($imgSrc);
+            }
+            else
+            {
+                echo json_encode(array('result'=>0,'message'=>'ERROR 0073 replace error '));exit();
+            }
+        }
+        echo json_encode(array('result'=>1,'message'=>'處理完成!'));exit();
     }
     
     //20150413 zoearth 搜尋檔案
