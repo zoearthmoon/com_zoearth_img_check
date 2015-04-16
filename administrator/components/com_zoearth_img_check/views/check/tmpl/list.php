@@ -24,6 +24,7 @@ function cleanSession()
             alert('刪除成功');
         }
     },'json');
+    resetTable();
 }
 
 //20150414 zoearth 動作
@@ -33,6 +34,7 @@ function actionImgs(actionName)
     jQuery.post(dataUrl, {},function(data){
         alert(data.message);
     },'json');
+    resetTable();
 }
 
 //20150413 zoearth 取得

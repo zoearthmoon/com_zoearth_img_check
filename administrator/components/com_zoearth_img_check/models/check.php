@@ -61,7 +61,7 @@ class ZoearthImgCheckModelCheck extends ZoeModel
     public function replcaeImgToJpg($imgSrc)
     {
         @unlink(JPATH_ROOT.DS.$imgSrc);
-        $newImgSrc  = preg_replace('/(.*)\.([a-z]*)$/','$1.jpg',$imgSrc);
+        $newImgSrc = $this->getNewJpgName($imgSrc);
         @copy(JPATH_ROOT.DS.'cache'.DS.'com_z2'.DS.'TMP_'.md5($imgSrc).'.jpg',JPATH_ROOT.DS.$newImgSrc);
     }
     
@@ -78,6 +78,17 @@ class ZoearthImgCheckModelCheck extends ZoeModel
         return TRUE;
     }
     
+    //計算新的JPG名稱
+    public function getNewJpgName($imgSrc)
+    {
+        $newImgSrc  = preg_replace('/(.*)\.([a-z]*)$/','$1',$imgSrc);
+        if (strtolower(substr($imgSrc,-3,3)) != 'jpg' && is_file(JPATH_ROOT.DS.$newImgSrc.'.jpg') )
+        {
+            $newImgSrc = $newImgSrc.'_C';
+        }
+        return $newImgSrc.'.jpg';
+    } 
+    
     //替換功能
     public function setContentData($imgItems,$imgSrc)
     {
@@ -91,7 +102,7 @@ class ZoearthImgCheckModelCheck extends ZoeModel
         $imgSrcUrl  = urlencode($imgSrc);
         
         //新的
-        $newImgSrc  = preg_replace('/(.*)\.([a-z]*)$/','$1.jpg',$imgSrc);
+        $newImgSrc  = $this->getNewJpgName($imgSrc);
         
         $newImgSrcJson = json_encode(array(0=>$newImgSrc));
         $newImgSrcJson = str_replace('["', '',$newImgSrcJson);
