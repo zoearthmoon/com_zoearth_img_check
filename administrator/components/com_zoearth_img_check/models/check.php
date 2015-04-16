@@ -353,7 +353,7 @@ class ZoearthImgCheckModelCheck extends ZoeModel
             {
                 //ZI項目資料
                 $Query = $this->DB->getQuery(true);
-                $Query = $Query->select('itemId,language,i.introtext AS content')
+                $Query = $Query->select('itemId,language,CONCAT(i.introtext,\'"\',i.image,\'"\',i.addPic,\'"\',i.extra_fields) AS content')
                     ->from('#__z2_items_lang AS i')
                     ->where('i.introtext REGEXP \'images[\\/][^?\\\'"]*\' OR
                              i.image REGEXP \'images[\\/][^?\\\'"]*\' OR
@@ -373,7 +373,7 @@ class ZoearthImgCheckModelCheck extends ZoeModel
                 
                 //ZI分類資料
                 $Query = $this->DB->getQuery(true);
-                $Query = $Query->select('i.catid,i.language,i.description AS content')
+                $Query = $Query->select('i.catid,i.language,CONCAT(i.description,\'"\',i.image,\'"\',i.extra_fields) AS content')
                     ->from('#__z2_categories_lang AS i')
                     ->where('i.description REGEXP \'images[\\/][^?\\\'"]*\' OR
                              i.image REGEXP \'images[\\/][^?\\\'"]*\' OR
@@ -396,7 +396,7 @@ class ZoearthImgCheckModelCheck extends ZoeModel
             else 
             {
                 $Query = $this->DB->getQuery(true);
-                $Query = $Query->select('id,CONCAT(i.introtext,i.fulltext) AS content')
+                $Query = $Query->select('id,CONCAT(i.introtext,\'"\',i.fulltext) AS content')
                     ->from('#__content AS i')
                     ->where('CONCAT(i.introtext,i.fulltext) REGEXP \'images[\\/][^?\\\'"]*\' ');
                 $this->DB->setQuery($Query);
