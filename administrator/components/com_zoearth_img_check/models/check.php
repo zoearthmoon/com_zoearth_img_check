@@ -150,7 +150,7 @@ class ZoearthImgCheckModelCheck extends ZoeModel
                 case "ZI":
                     $dataIdArray = explode('|', $dataId);
                     $Query = $db->getQuery(true);
-                    $Query = $Query->select('i.itemId,i.language,i.introtext')
+                    $Query = $Query->select('i.itemId,i.language,i.introtext,i.image,i.addPic,i.extra_fields')
                         ->from('#__z2_items_lang AS i')
                         ->where('i.itemId = '.(int)$dataIdArray[0])
                         ->where('i.language = '.$db->quote($dataIdArray[1]));
@@ -161,9 +161,15 @@ class ZoearthImgCheckModelCheck extends ZoeModel
                         return FALSE;
                     }
                     $row->introtext = strtr($row->introtext, $replaceArray);
+                    $row->image = strtr($row->image, $replaceArray);
+                    $row->addPic = strtr($row->addPic, $replaceArray);
+                    $row->extra_fields = strtr($row->extra_fields, $replaceArray);
                 
                     $updateQuery = "UPDATE #__z2_items_lang SET
-                        `introtext` = ".$db->quote($row->introtext)."
+                        `introtext` = ".$db->quote($row->introtext).",
+                        `image` = ".$db->quote($row->image).",
+                        `addPic` = ".$db->quote($row->addPic).",
+                        `extra_fields` = ".$db->quote($row->extra_fields)."
                         WHERE itemId = ".(int)$dataIdArray[0]." AND language = ".$db->quote($dataIdArray[1]);
                     $db->setQuery($updateQuery);
                     $db->execute();
@@ -171,7 +177,7 @@ class ZoearthImgCheckModelCheck extends ZoeModel
                 case "ZC":
                     $dataIdArray = explode('|', $dataId);
                     $Query = $db->getQuery(true);
-                    $Query = $Query->select('i.catid,i.language,i.description')
+                    $Query = $Query->select('i.catid,i.language,i.description,i.image,i.extra_fields')
                         ->from('#__z2_categories_lang AS i')
                         ->where('i.catid = '.(int)$dataIdArray[0])
                         ->where('i.language = '.$db->quote($dataIdArray[1]));
@@ -182,9 +188,13 @@ class ZoearthImgCheckModelCheck extends ZoeModel
                         return FALSE;
                     }
                     $row->description = strtr($row->description, $replaceArray);
+                    $row->image = strtr($row->image, $replaceArray);
+                    $row->extra_fields = strtr($row->extra_fields, $replaceArray);
                 
                     $updateQuery = "UPDATE #__z2_categories_lang SET
-                        `description` = ".$db->quote($row->description)."
+                        `description` = ".$db->quote($row->description).",
+                        `image` = ".$db->quote($row->image).",
+                        `extra_fields` = ".$db->quote($row->extra_fields)."
                         WHERE catid = ".(int)$dataIdArray[0]." AND language = ".$db->quote($dataIdArray[1]);
                     $db->setQuery($updateQuery);
                     $db->execute();
@@ -345,7 +355,10 @@ class ZoearthImgCheckModelCheck extends ZoeModel
                 $Query = $this->DB->getQuery(true);
                 $Query = $Query->select('itemId,language,i.introtext AS content')
                     ->from('#__z2_items_lang AS i')
-                    ->where('i.introtext REGEXP \'images[\\/][^?\\\'"]*\' ');
+                    ->where('i.introtext REGEXP \'images[\\/][^?\\\'"]*\' OR
+                             i.image REGEXP \'images[\\/][^?\\\'"]*\' OR
+                             i.addPic REGEXP \'images[\\/][^?\\\'"]*\' OR
+                             i.extra_fields REGEXP \'images[\\/][^?\\\'"]*\' ');
                 $this->DB->setQuery($Query);
                 $rows = $this->DB->loadObjectList();
                 foreach ($rows as $row)
@@ -362,7 +375,10 @@ class ZoearthImgCheckModelCheck extends ZoeModel
                 $Query = $this->DB->getQuery(true);
                 $Query = $Query->select('i.catid,i.language,i.description AS content')
                     ->from('#__z2_categories_lang AS i')
-                    ->where('i.description REGEXP \'images[\\/][^?\\\'"]*\' ');
+                    ->where('i.description REGEXP \'images[\\/][^?\\\'"]*\' OR
+                             i.image REGEXP \'images[\\/][^?\\\'"]*\' OR
+                             i.extra_fields REGEXP \'images[\\/][^?\\\'"]*\'');
+                
                 $this->DB->setQuery($Query);
                 $rows = $this->DB->loadObjectList();
                 foreach ($rows as $row)
