@@ -38,7 +38,7 @@ class ZoearthImgCheckModelCheck extends ZoeModel
                     $im = imagecreatefromgif(JPATH_ROOT.DS.$imgSrc);
                     break;
                 case "bmp":
-                    require_once JPATH_ADMINISTRATOR.'components'.DS.'com_zoearth_img_check'.DS.'libraries'.DS.'BMP.php';
+                    require_once JPATH_ADMINISTRATOR.DS.'components'.DS.'com_zoearth_img_check'.DS.'libraries'.DS.'BMP.php';
                     $im = imagecreatefrombmp(JPATH_ROOT.DS.$imgSrc);
                     break;
                 default:
@@ -144,6 +144,48 @@ class ZoearthImgCheckModelCheck extends ZoeModel
                         `introtext` = ".$db->quote($row->introtext).",
                         `fulltext` = ".$db->quote($row->fulltext)."
                         WHERE id = ".(int)$dataId;
+                    $db->setQuery($updateQuery);
+                    $db->execute();
+                    break;
+                case "ZI":
+                    $dataIdArray = explode('|', $dataId);
+                    $Query = $db->getQuery(true);
+                    $Query = $Query->select('i.itemId,i.language,i.introtext')
+                        ->from('#__z2_items_lang AS i')
+                        ->where('i.itemId = '.(int)$dataIdArray[0])
+                        ->where('i.language = '.$db->quote($dataIdArray[1]));
+                    $db->setQuery($Query);
+                    $row = $db->loadObject();
+                    if (!$row)
+                    {
+                        return FALSE;
+                    }
+                    $row->introtext = strtr($row->introtext, $replaceArray);
+                
+                    $updateQuery = "UPDATE #__z2_items_lang SET
+                        `introtext` = ".$db->quote($row->introtext)."
+                        WHERE itemId = ".(int)$dataIdArray[0]." AND language = ".$db->quote($dataIdArray[1]);
+                    $db->setQuery($updateQuery);
+                    $db->execute();
+                    break;
+                case "ZC":
+                    $dataIdArray = explode('|', $dataId);
+                    $Query = $db->getQuery(true);
+                    $Query = $Query->select('i.catid,i.language,i.description')
+                        ->from('#__z2_categories_lang AS i')
+                        ->where('i.catid = '.(int)$dataIdArray[0])
+                        ->where('i.language = '.$db->quote($dataIdArray[1]));
+                    $db->setQuery($Query);
+                    $row = $db->loadObject();
+                    if (!$row)
+                    {
+                        return FALSE;
+                    }
+                    $row->description = strtr($row->description, $replaceArray);
+                
+                    $updateQuery = "UPDATE #__z2_categories_lang SET
+                        `description` = ".$db->quote($row->description)."
+                        WHERE catid = ".(int)$dataIdArray[0]." AND language = ".$db->quote($dataIdArray[1]);
                     $db->setQuery($updateQuery);
                     $db->execute();
                     break;
@@ -296,13 +338,14 @@ class ZoearthImgCheckModelCheck extends ZoeModel
             //是否有Z2表單
             $haveZ2 = $this->haveZ2Tables();
             
-            //搜尋原生資料
+            //搜尋Z2資料
             if ($haveZ2)
             {
+                //ZI項目資料
                 $Query = $this->DB->getQuery(true);
-                $Query = $Query->select('id,CONCAT(i.introtext,i.fulltext) AS content')
-                    ->from('#__content AS i')
-                    ->where('CONCAT(i.introtext,i.fulltext) REGEXP \'images[\\/][^?\\\'"]*\' ');
+                $Query = $Query->select('itemId,language,i.introtext AS content')
+                    ->from('#__z2_items_lang AS i')
+                    ->where('i.introtext REGEXP \'images[\\/][^?\\\'"]*\' ');
                 $this->DB->setQuery($Query);
                 $rows = $this->DB->loadObjectList();
                 foreach ($rows as $row)
@@ -311,10 +354,29 @@ class ZoearthImgCheckModelCheck extends ZoeModel
                     foreach ($images as $imgsrc)
                     {
                         $imgsrc = trim($imgsrc);
-                        $allImgSrc[$imgsrc]['J_'.$row->id] = 'J_'.$row->id;
+                        $allImgSrc[$imgsrc]['ZI_'.$row->id] = 'ZI_'.$row->itemId.'|'.$row->language;
                     }
                 }
+                
+                //ZI分類資料
+                $Query = $this->DB->getQuery(true);
+                $Query = $Query->select('i.catid,i.language,i.description AS content')
+                    ->from('#__z2_categories_lang AS i')
+                    ->where('i.description REGEXP \'images[\\/][^?\\\'"]*\' ');
+                $this->DB->setQuery($Query);
+                $rows = $this->DB->loadObjectList();
+                foreach ($rows as $row)
+                {
+                    $images = $this->getContentImgSrc($row->content);
+                    foreach ($images as $imgsrc)
+                    {
+                        $imgsrc = trim($imgsrc);
+                        $allImgSrc[$imgsrc]['ZC_'.$row->id] = 'ZC_'.$row->catid.'|'.$row->language;
+                    }
+                }
+                
             }
+            //搜尋原生資料
             else 
             {
                 $Query = $this->DB->getQuery(true);
