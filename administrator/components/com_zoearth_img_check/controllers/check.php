@@ -111,7 +111,7 @@ class ZoearthImgCheckControllerCheck extends ZoeController
                 if (!(is_file(JPATH_ROOT.DS.$imgSrc)))
                 {
                     $res[] = array(
-                            '<input type="checkbox" name="imgItems[]" value="'.$imgSrc.'" class="itemCheckBox" >',
+                            '<input type="checkbox" name="imgItems[]" value="'.$imgSrc.'" class="itemCheckBox" ><span class="lbl"></span>',
                             '-無圖片-',
                             $imgSrc,
                             '--',
@@ -133,7 +133,7 @@ class ZoearthImgCheckControllerCheck extends ZoeController
                 if (!isset($items[$imgSrc]))
                 {
                     $res[] = array(
-                            '<input type="checkbox" name="imgItems[]" value="'.$imgSrc.'" class="itemCheckBox" >',
+                            '<input type="checkbox" name="imgItems[]" value="'.$imgSrc.'" class="itemCheckBox" ><span class="lbl"></span>',
                             '<img src="'.JUri::root().$imgSrc.'" width="50">',
                             $imgSrc,
                             ceil($imgData['size']/1000).' KB',
@@ -187,7 +187,7 @@ class ZoearthImgCheckControllerCheck extends ZoeController
                 if ($getFile)
                 {
                     $res[] = array(
-                            '<input type="checkbox" name="imgItems[]" value="'.$imgSrc.'" class="itemCheckBox" >',
+                            '<input type="checkbox" name="imgItems[]" value="'.$imgSrc.'" class="itemCheckBox" ><span class="lbl"></span>',
                             '<img src="'.JUri::root().$imgSrc.'" width="50">',
                             $imgSrc,
                             ceil($imgData['size']/1000).' KB',

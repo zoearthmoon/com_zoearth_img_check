@@ -149,7 +149,7 @@ function resetTable()
         </table>
     </form>
     <div id="tableDataDiv" style="min-height: 500px">
-    <legend><input type="checkbox" onclick="selectAll(this)" >選擇</legend>
+    <legend><input type="checkbox" onclick="selectAll(this)" ><span class="lbl"></span>選擇</legend>
     
     <form id="imgDataTable">
     <table id="imgDatas" class="display table table-bordered" cellspacing="0" width="100%">
