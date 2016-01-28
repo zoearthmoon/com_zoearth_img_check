@@ -51,6 +51,7 @@ class ZoearthImgCheckControllerBatch extends JControllerLegacy
             $needUpdate = FALSE;
             
             $new_introtext = $this->newContent($row->introtext);
+            
             if (trim($row->introtext) != $new_introtext)
             {
                 $query->set('introtext = '.$db->quote($new_introtext));
@@ -69,17 +70,26 @@ class ZoearthImgCheckControllerBatch extends JControllerLegacy
                 $needUpdate = TRUE;
             }
             
+            
             if ($needUpdate)
             {
                 $query->where('itemId   = '. $db->quote($row->itemId));
                 $query->where('language = '. $db->quote($row->language));
+                
+                echo $query;
+                echo $row->itemId.' ---DONE<br>';
+                /*
                 $db->setQuery($query);
                 if (!$db->execute())
                 {
                     echo 'ERROR 0073 更新失敗';
                     return FALSE;
                 }
+                echo $row->itemId.' ---DONE<br>';
+                */
             }
+            
+            
         }
         
         echo 'Done!!';
@@ -89,30 +99,44 @@ class ZoearthImgCheckControllerBatch extends JControllerLegacy
     //複製新檔案 新增資料夾 但是不刪除舊檔案(全部都確定後再刪除)
     function newContent($input='')
     {
+        $input = trim($input);
+        if (!preg_match_all('/images\/blog\/([0-9]{6})([^\"\']{1,})/','"'.$input.'"',$match))
+        {
+            return $input;
+        }
         
+        //print_r($match);
+        //20160128 zoearth 新增資料夾
+        foreach ($match[1] as $year)
+        {
+            if (!is_dir(JPATH_ROOT.DS.'images'.DS.'blog'.DS.$year))
+            {
+                @mkdir(JPATH_ROOT.DS.'images'.DS.'blog'.DS.$year);
+            }
+        }
         
+        foreach ($match[0] as $key=>$img)
+        {
+            $oldImg = JPATH_ROOT.DS.$img;
+            $oldStr = $img;
+            if (!is_file($oldImg))
+            {
+                echo '找不到圖片!:'.$img.'<br>';
+                continue;
+            }
+            
+            $newImg = JPATH_ROOT.DS.'images'.DS.'blog'.DS.$match[1][$key].DS.$match[1][$key].$match[2][$key];
+            $newStr = 'images/blog/'.$match[1][$key].'/'.$match[1][$key].$match[2][$key];
+            if (!is_file($newImg))
+            {
+                @copy($oldImg,$newImg);
+            }
+            
+            //取代
+            //echo 'IMG:'.$oldStr.'<br>'.$newStr.'<br>';
+            $input = str_replace($oldStr,$newStr,$input);
+        }
         
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
+        return $input;
     }
 }
