@@ -3,6 +3,7 @@
 @author zoearth
 */
 defined('_JEXEC') or die('Restricted access');
+exit();
 
 class ZoearthImgCheckControllerBatch extends JControllerLegacy
 {
@@ -27,12 +28,12 @@ class ZoearthImgCheckControllerBatch extends JControllerLegacy
         $query->select('*')
             ->from('#__z2_items_lang')
             ->where('
-                    `introtext` LIKE "%images/blog/%" OR
-                    `fulltext`  LIKE "%images/blog/%" OR
-                    `image`     LIKE "%images/blog/%"
+                    `introtext` REGEXP "images\/blog\/([0-9]{6})([^\"\'\/]{1,}\.[^\"\'\/]{1,})" OR
+                    `fulltext`  REGEXP "images\/blog\/([0-9]{6})([^\"\'\/]{1,}\.[^\"\'\/]{1,})" OR
+                    `image`     REGEXP "images\/blog\/([0-9]{6})([^\"\'\/]{1,}\.[^\"\'\/]{1,})"
                    ')
             ->order('itemId');
-        $db->setQuery($query,0,10);
+        $db->setQuery($query,0,20);
         $rows = $db->loadObjectList();
         
         if (!$rows)
@@ -76,17 +77,15 @@ class ZoearthImgCheckControllerBatch extends JControllerLegacy
                 $query->where('itemId   = '. $db->quote($row->itemId));
                 $query->where('language = '. $db->quote($row->language));
                 
-                echo $query;
+                //echo $query;
                 echo $row->itemId.' ---DONE<br>';
-                /*
+                
                 $db->setQuery($query);
                 if (!$db->execute())
                 {
                     echo 'ERROR 0073 更新失敗';
                     return FALSE;
                 }
-                echo $row->itemId.' ---DONE<br>';
-                */
             }
             
             
@@ -100,7 +99,7 @@ class ZoearthImgCheckControllerBatch extends JControllerLegacy
     function newContent($input='')
     {
         $input = trim($input);
-        if (!preg_match_all('/images\/blog\/([0-9]{6})([^\"\']{1,})/','"'.$input.'"',$match))
+        if (!preg_match_all('/images\/blog\/([0-9]{6})([^\"\'\/]{1,}\.[^\"\'\/]{1,})/','"'.$input.'"',$match))
         {
             return $input;
         }
