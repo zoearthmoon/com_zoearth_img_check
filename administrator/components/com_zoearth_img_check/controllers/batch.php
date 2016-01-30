@@ -4,7 +4,6 @@
 */
 defined('_JEXEC') or die('Restricted access');
 exit();
-
 class ZoearthImgCheckControllerBatch extends JControllerLegacy
 {
     function display($cachable = false, $urlparams = false)
@@ -27,15 +26,22 @@ class ZoearthImgCheckControllerBatch extends JControllerLegacy
         $query = $db->getQuery(true);
         $query->select('*')
             ->from('#__z2_items_lang')
+			/*
             ->where('
                     `introtext` REGEXP "images\/blog\/([0-9]{6})([^\"\'\/]{1,}\.[^\"\'\/]{1,})" OR
                     `fulltext`  REGEXP "images\/blog\/([0-9]{6})([^\"\'\/]{1,}\.[^\"\'\/]{1,})" OR
                     `image`     REGEXP "images\/blog\/([0-9]{6})([^\"\'\/]{1,}\.[^\"\'\/]{1,})"
                    ')
+				   */
+            ->where('
+                    `addPic`     REGEXP "images"
+                   ')
+			->where('itemId >= 600 ')
+			->where('itemId <= 1900 ')
             ->order('itemId');
-        $db->setQuery($query,0,20);
+        $db->setQuery($query,0,200);
         $rows = $db->loadObjectList();
-        
+        echo $query.'  query ';
         if (!$rows)
         {
             echo 'ERROR 0040 沒有找到資料';
@@ -51,6 +57,7 @@ class ZoearthImgCheckControllerBatch extends JControllerLegacy
             $upData = array();
             $needUpdate = FALSE;
             
+			/*
             $new_introtext = $this->newContent($row->introtext);
             
             if (trim($row->introtext) != $new_introtext)
@@ -70,8 +77,27 @@ class ZoearthImgCheckControllerBatch extends JControllerLegacy
                 $query->set('image = '.$db->quote($new_image));
                 $needUpdate = TRUE;
             }
-            
-            
+            */
+            $jaddPic = json_decode($row->addPic,TRUE);
+			if (is_array($jaddPic) && count($jaddPic) > 0 )
+			{
+				foreach ($jaddPic as $key=>$addPic)
+				{
+					$new_pic = $this->newContent($addPic['pic']);
+					if (trim($addPic['pic']) != $new_pic)
+					{
+						$addPic['pic'] = $new_pic;
+						$jaddPic[$key] = $addPic;
+						$needUpdate = TRUE;
+					}
+				}
+				if ($needUpdate)
+				{
+					$query->set('addPic = '.$db->quote(json_encode($jaddPic)));
+				}
+			}
+
+			
             if ($needUpdate)
             {
                 $query->where('itemId   = '. $db->quote($row->itemId));
@@ -79,13 +105,15 @@ class ZoearthImgCheckControllerBatch extends JControllerLegacy
                 
                 //echo $query;
                 echo $row->itemId.' ---DONE<br>';
-                
+                //echo $query;
+				
                 $db->setQuery($query);
                 if (!$db->execute())
                 {
                     echo 'ERROR 0073 更新失敗';
                     return FALSE;
                 }
+				
             }
             
             
