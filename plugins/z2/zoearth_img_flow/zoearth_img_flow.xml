@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<extension version="3.0" type="plugin" method="upgrade" group="z2">
+    <name>plg_zoearth_img_flow</name>
+    <author>zoearthmoon@gmail.com</author>
+    <creationDate>2016-08-11</creationDate>
+    <copyright>Copyright (c) plusdi.com.</copyright>
+    <authorEmail>zoearthmoon@gmail.com</authorEmail>
+    <authorUrl>http://www.zoearthmoon.net</authorUrl>
+    <version>1.0.0</version>
+    <description>
+    <![CDATA[
+    <div style="text-align:left">
+        <blockquote>
+        <p>您好!這是阿任所開發的<h1>圖片FTP同步外掛</h1></p>
+        <small>此功能必須與Z2配合且設定產品分類才能正常運作<br></small>
+        </blockquote>
+    </div>
+    ]]></description>
+    <files>
+        <filename plugin="zoearth_img_flow">zoearth_img_flow.php</filename>
+        <filename>zoearth_img_flow.xml</filename>
+        <filename>zoearth_img_flow_helper.php</filename>
+    </files>
+    <languages>
+    </languages>
+    <config>
+        <fields name="params">
+            <fieldset name="basic">
+                <field name="ftp_url" type="text" default="" label="FTP網址" description="要同步的FTP網址" />
+                <field name="ftp_account" type="text" default="" label="FTP帳號" description="要同步的FTP帳號" />
+                <field name="ftp_password" type="text" default="" label="FTP密碼" description="要同步的FTP密碼" />
+            </fieldset>
+        </fields>
+    </config>
+</extension>

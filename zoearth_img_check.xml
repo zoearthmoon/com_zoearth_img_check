@@ -55,4 +55,8 @@
     </administration>
     <config>
     </config>
+    <plugins>
+        <plugin plugin="zoearth_img_flow" group="z2" />
+        <plugin plugin="zoearth_img_flow_page" group="system" />
+    </plugins>
 </extension>

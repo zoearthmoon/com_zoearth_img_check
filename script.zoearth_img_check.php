@@ -1,7 +1,7 @@
 <?php
 defined('_JEXEC') or die ;
 
-class Com_Zoearth_Twcn_ChangeInstallerScript
+class Com_Zoearth_Img_CheckInstallerScript
 {
     
     public $comName = "圖片整理元件";
@@ -27,13 +27,6 @@ class Com_Zoearth_Twcn_ChangeInstallerScript
             }
             $installer = new JInstaller;
             $result = $installer->install($path);
-            if ($result && $group != 'finder' && $group != 'josetta_ext')
-            {
-                if (JFile::exists(JPATH_SITE.'/plugins/'.$group.'/'.$name.'/'.$name.'.xml'))
-                {
-                    JFile::delete(JPATH_SITE.'/plugins/'.$group.'/'.$name.'/'.$name.'.xml');
-                }
-            }
             $query = "UPDATE #__extensions SET enabled=1 WHERE type='plugin' AND element=".$db->Quote($name)." AND folder=".$db->Quote($group);
             $db->setQuery($query);
             $db->query();
